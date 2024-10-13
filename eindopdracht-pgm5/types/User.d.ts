@@ -1,3 +1,5 @@
+import UserRole from "./UserRole";
+
 export type User = {
   id: number;
   name: string;
@@ -5,4 +7,5 @@ export type User = {
   password: string | null;
   githubId: string | null;
   googleId: string | null;
+  role: UserRole;
 };

@@ -2,6 +2,7 @@
 import React, { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { authenticateThirdParty } from "@/lib/loginActions";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,19 +28,8 @@ export default function LoginPage() {
     }
   };
 
-  const handleLoginWithGitHub = async () => {
-    const res = await signIn("github", { redirect: false });
-    if (!res?.error) {
-      router.push("/");
-    }
-  };
-
-  const handleLoginWithGoogle = async () => {
-    const res = await signIn("google", { redirect: false });
-    if (!res?.error) {
-      router.push("/");
-    }
-  };
+  const handleLoginWithGitHub = () => authenticateThirdParty("github");
+  const handleLoginWithGoogle = () => authenticateThirdParty("google");
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">

@@ -8,5 +8,6 @@ export const users: User[] = [
     password: "$2a$10$Ky6E319q5M7oTq1Oh5C8zOeJP7NvSW20Zjdq3/xKCPu9hlM3fVBqe",
     githubId: null,
     googleId: null,
+    role: "admin",
   },
 ];
