@@ -2,7 +2,8 @@ import UserRole from "./UserRole";
 
 export type User = {
   id: number;
-  name: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string | null;
   githubId: string | null;
