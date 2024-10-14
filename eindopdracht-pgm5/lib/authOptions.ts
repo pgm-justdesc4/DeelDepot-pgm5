@@ -38,7 +38,10 @@ export const authOptions: NextAuthOptions = {
           users.push(user);
         } else {
           // Authenticate existing user
-          const isValid = await bcrypt.compare(password, user.password);
+          const isValid = await bcrypt.compare(
+            password as string,
+            user.password as string
+          );
           if (!isValid) {
             return null;
           }
@@ -70,7 +73,13 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      if (user) {
+      if (
+        user &&
+        account &&
+        (account.provider === "github" || account.provider === "google")
+      ) {
+        token.role = user.role || "user";
+      } else if (user) {
         token.role = user.role;
       }
       return token;
