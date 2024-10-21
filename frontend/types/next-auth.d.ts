@@ -1,9 +1,10 @@
+import UserRole from "./UserRole";
+
 declare module "next-auth" {
   interface Session {
     user: {
       id: number;
-      firstname?: string | null;
-      lastname?: string | null;
+      username?: string | null;
       email?: string | null;
       role?: UserRole;
     };
@@ -11,8 +12,7 @@ declare module "next-auth" {
 
   interface User {
     id: number;
-    firstname?: string | null;
-    lastname?: string | null;
+    username?: string | null;
     email?: string | null;
     role?: UserRole;
   }
