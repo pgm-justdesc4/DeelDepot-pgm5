@@ -2,8 +2,8 @@
 import React from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import LoginButton from "../components/common/LoginButton";
-import LogoutButton from "../components/common/LogoutButton";
+import LoginButton from "./common/LoginButton";
+import LogoutButton from "./common/LogoutButton";
 
 const Navigation: React.FC = () => {
   const { data: session } = useSession();
