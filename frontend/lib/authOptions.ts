@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger, session }) {
       if (
         user &&
         account &&
@@ -81,6 +81,9 @@ export const authOptions: NextAuthOptions = {
       } else if (user) {
         token.id = user.id;
         token.role = user.role;
+      } else if (trigger === "update") {
+        token.name = session.user.name;
+        token.email = session.user.email;
       }
       return token;
     },

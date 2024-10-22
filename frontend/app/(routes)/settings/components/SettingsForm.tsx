@@ -4,32 +4,23 @@ import { useSession } from "next-auth/react";
 import { gql, GraphQLClient } from "graphql-request";
 
 const UPDATE_USER = gql`
-  mutation UpdateUser(
-    $id: ID!
-    $username: String!
-    $email: String!
-    $password: String!
+  mutation Mutation(
+    $updateUsersPermissionsUserId: ID!
+    $data: UsersPermissionsUserInput!
   ) {
-    updateUser(
-      id: $id
-      data: { username: $username, email: $email, password: $password }
-    ) {
+    updateUsersPermissionsUser(id: $updateUsersPermissionsUserId, data: $data) {
       data {
-        id
-        attributes {
-          username
-          email
-        }
+        username
+        email
       }
     }
   }
 `;
 
 const SettingsForm: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (session?.user) {
@@ -40,26 +31,32 @@ const SettingsForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(session?.user);
     if (session?.user?.id) {
       try {
-        console.log("Submitting form with data:", {
-          username,
-          email,
-          password,
-        });
         const client = new GraphQLClient(
           `${process.env.NEXT_PUBLIC_API_URL}/graphql`
         );
         const variables = {
-          id: session.user.id,
-          username,
-          email,
-          password,
+          updateUsersPermissionsUserId: session.user.id,
+          data: {
+            username,
+            email,
+          },
         };
-        console.log("Sending request with variables:", variables);
-        const response = await client.request(UPDATE_USER, variables);
-        console.log("User updated successfully", response);
+        const response: {
+          updateUsersPermissionsUser: {
+            data: { username: string; email: string };
+          };
+        } = await client.request(UPDATE_USER, variables);
+
+        const updatedUser = {
+          ...session.user,
+          name: response.updateUsersPermissionsUser.data.username,
+          email: response.updateUsersPermissionsUser.data.email,
+        };
+
+        await update({ user: updatedUser, trigger: "update" });
+
         alert("User updated successfully");
       } catch (error) {
         console.error("Error updating user:", error);
@@ -103,22 +100,6 @@ const SettingsForm: React.FC = () => {
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Password:
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           required
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
