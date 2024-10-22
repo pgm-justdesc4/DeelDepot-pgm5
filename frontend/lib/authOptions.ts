@@ -76,8 +76,10 @@ export const authOptions: NextAuthOptions = {
         account &&
         (account.provider === "github" || account.provider === "google")
       ) {
+        token.id = user.id;
         token.role = user.role || "user";
       } else if (user) {
+        token.id = user.id;
         token.role = user.role;
       }
       return token;

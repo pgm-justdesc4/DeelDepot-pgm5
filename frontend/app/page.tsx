@@ -10,7 +10,8 @@ export default async function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-4xl font-bold text-blue-600 mb-4">Deeldepot</h1>
       <p className="text-lg text-gray-700 text-center max-w-md">
-        Dit is de homepage. Je bent {session ? "ingelogd" : "niet ingelogd"}.
+        Dit is de homepage, overview all products + filter all/available
+        products. Je bent {session ? "ingelogd" : "niet ingelogd"}.
       </p>
       {session ? <LogoutButton /> : <LoginButton />}
     </div>
