@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../lib/authOptions";
 import LoginButton from "@/components/common/LoginButton";
 import LogoutButton from "@/components/common/LogoutButton";
+import ProductsOverview from "@/components/ProductsOvrview";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -14,6 +15,7 @@ export default async function Home() {
         products. Je bent {session ? "ingelogd" : "niet ingelogd"}.
       </p>
       {session ? <LogoutButton /> : <LoginButton />}
+      <ProductsOverview />
     </div>
   );
 }
