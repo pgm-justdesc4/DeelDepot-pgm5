@@ -65,7 +65,7 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="product-detail p-6 max-w-4xl mx-auto">
+    <div className="product-detail p-6 max-w-7xl mx-auto">
       <a href="/products" className="text-blue-500 hover:underline">
         ← Products
       </a>

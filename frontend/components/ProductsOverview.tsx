@@ -52,7 +52,7 @@ const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
   const displayedProducts = limit ? products.slice(0, limit) : products;
 
   return (
-    <div className="products-overview grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div className="products-overview grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
       {displayedProducts.map((product) => (
         <a
           href={`/products/${product.documentId}`}

@@ -70,7 +70,7 @@ const SettingsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg"
+      className="max-w-7xl w-96 mx-auto p-6 bg-white"
     >
       <div className="mb-4">
         <label
