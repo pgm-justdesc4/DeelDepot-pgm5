@@ -5,7 +5,11 @@ import { gql, GraphQLClient } from "graphql-request";
 import { useSession } from "next-auth/react";
 import { Product } from "../types/Product";
 
-const ProductsOverview: React.FC = () => {
+interface ProductsOverviewProps {
+  limit?: number;
+}
+
+const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
   const { data: session } = useSession();
   const [products, setProducts] = React.useState<Product[]>([]);
 
@@ -49,9 +53,11 @@ const ProductsOverview: React.FC = () => {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
 
+  const displayedProducts = limit ? products.slice(0, limit) : products;
+
   return (
     <div className="products-overview grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-      {products.map((product) => (
+      {displayedProducts.map((product) => (
         <a
           href={`/products/${product.slug}`}
           key={product.documentId}
