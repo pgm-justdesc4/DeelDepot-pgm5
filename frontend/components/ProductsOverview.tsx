@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import { gql, GraphQLClient } from "graphql-request";
-import { useSession } from "next-auth/react";
 import { Product } from "../types/Product";
 
 interface ProductsOverviewProps {
@@ -10,7 +9,6 @@ interface ProductsOverviewProps {
 }
 
 const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
-  const { data: session } = useSession();
   const [products, setProducts] = React.useState<Product[]>([]);
 
   React.useEffect(() => {
@@ -44,10 +42,8 @@ const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
       }
     };
 
-    if (session) {
-      fetchProducts();
-    }
-  }, [session]);
+    fetchProducts();
+  }, []);
 
   if (products.length === 0) {
     return <div className="text-center text-gray-500">Loading...</div>;
@@ -59,7 +55,7 @@ const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
     <div className="products-overview grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
       {displayedProducts.map((product) => (
         <a
-          href={`/products/${product.slug}`}
+          href={`/products/${product.documentId}`}
           key={product.documentId}
           className="product-preview bg-white shadow-md rounded-lg p-4"
         >
