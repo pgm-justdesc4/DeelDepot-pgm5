@@ -1,9 +1,10 @@
 export type Product = {
-  id: number;
+  documentId: string;
+  slug: string;
   title: string;
   shortDescription: string;
   description: string;
-  images: string[];
+  images: { url: string }[];
   available: boolean;
-  user: string;
+  user: { username: string };
 };

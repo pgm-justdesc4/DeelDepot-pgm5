@@ -10,6 +10,16 @@ export default function SideNavigation() {
       <ul className="space-y-2">
         <li>
           <Link
+            href="/"
+            className={`${
+              pathname === "/" ? "bg-gray-700" : ""
+            } text-white hover:bg-gray-700 px-3 py-2 rounded-md block`}
+          >
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link
             href="/dashboard"
             className={`${
               pathname === "/dashboard" ? "bg-gray-700" : ""
