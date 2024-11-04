@@ -63,7 +63,7 @@ const NewProductForm: React.FC = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${session.user.strapiToken}`,
+            Authorization: `Bearer ${session?.user.strapiToken}`,
           },
           body: imageFormData,
         }

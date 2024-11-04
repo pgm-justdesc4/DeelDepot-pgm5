@@ -49,6 +49,32 @@ const UserProductsList: React.FC = () => {
     fetchProducts();
   }, [session]);
 
+  const deleteProduct = async (productId: string) => {
+    const endpoint = process.env.NEXT_PUBLIC_API_URL as string;
+    const graphQLClient = new GraphQLClient(`${endpoint}/graphql`, {
+      headers: {
+        Authorization: `Bearer ${session?.user.strapiToken}`,
+      },
+    });
+
+    const mutation = gql`
+      mutation Mutation($documentId: ID!) {
+        deleteProduct(documentId: $documentId) {
+          documentId
+        }
+      }
+    `;
+
+    try {
+      await graphQLClient.request(mutation, { documentId: productId });
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product.documentId !== productId)
+      );
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   if (products.length === 0) {
     return (
       <div className="text-center text-gray-500">
@@ -94,12 +120,12 @@ const UserProductsList: React.FC = () => {
             >
               Edit
             </Link>
-            <Link
-              href={`/products/delete/${product.documentId}`}
+            <button
+              onClick={() => deleteProduct(product.documentId)}
               className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300"
             >
               Delete
-            </Link>
+            </button>
           </div>
         </div>
       ))}
