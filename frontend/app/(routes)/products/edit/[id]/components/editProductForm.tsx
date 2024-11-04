@@ -20,8 +20,8 @@ const GET_PRODUCT_QUERY = gql`
 `;
 
 const UPDATE_PRODUCT_MUTATION = gql`
-  mutation UpdateProduct($id: ID!, $data: ProductInput!) {
-    updateProduct(id: $id, data: $data) {
+  mutation UpdateProduct($documentId: ID!, $data: ProductInput!) {
+    updateProduct(documentId: $documentId, data: $data) {
       documentId
       title
       shortDescription
@@ -97,7 +97,7 @@ const EditProductForm: React.FC = () => {
       await request(
         `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
         UPDATE_PRODUCT_MUTATION,
-        { id, data: input },
+        { documentId: id, data: input },
         {
           Authorization: `Bearer ${session.user.strapiToken}`,
         }
