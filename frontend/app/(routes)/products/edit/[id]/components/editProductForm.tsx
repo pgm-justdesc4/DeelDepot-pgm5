@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import { gql, request } from "graphql-request";
+import { Product } from "@/types/Product";
 
 const GET_PRODUCT_QUERY = gql`
   query Query($documentId: ID!) {
@@ -12,9 +13,6 @@ const GET_PRODUCT_QUERY = gql`
       shortDescription
       description
       available
-      images {
-        documentId
-      }
     }
   }
 `;
@@ -27,9 +25,6 @@ const UPDATE_PRODUCT_MUTATION = gql`
       shortDescription
       description
       available
-      images {
-        documentId
-      }
     }
   }
 `;
@@ -53,7 +48,7 @@ const EditProductForm: React.FC = () => {
           GET_PRODUCT_QUERY,
           { documentId: id }
         );
-        const product = data.product;
+        const product = (data as { product: Product }).product;
         setFormData({
           title: product.title,
           shortDescription: product.shortDescription,
