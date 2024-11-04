@@ -29,7 +29,7 @@ const NewProductForm: React.FC = () => {
     title: "",
     shortDescription: "",
     description: "",
-    available: "no",
+    available: "yes",
   });
   const [images, setImages] = useState<FileList | null>(null);
 

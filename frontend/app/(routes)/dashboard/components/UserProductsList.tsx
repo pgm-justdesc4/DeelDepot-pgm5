@@ -4,13 +4,11 @@ import Image from "next/image";
 import { gql, GraphQLClient } from "graphql-request";
 import { Product } from "@/types/Product";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const UserProductsList: React.FC = () => {
   const [products, setProducts] = React.useState<Product[]>([]);
   const { data: session } = useSession();
-  const router = useRouter();
 
   React.useEffect(() => {
     const fetchProducts = async () => {
@@ -77,14 +75,8 @@ const UserProductsList: React.FC = () => {
 
   if (products.length === 0) {
     return (
-      <div className="text-center text-gray-500">
-        <p>You have no products yet.</p>
-        <button
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-          onClick={() => router.push("/new-product")}
-        >
-          New Product
-        </button>
+      <div className="text-center mt-14 text-gray-500">
+        <p>You have no products yet, create one!</p>
       </div>
     );
   }
