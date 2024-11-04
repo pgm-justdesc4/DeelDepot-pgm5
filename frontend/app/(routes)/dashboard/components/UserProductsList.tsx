@@ -5,6 +5,7 @@ import { gql, GraphQLClient } from "graphql-request";
 import { Product } from "@/types/Product";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const UserProductsList: React.FC = () => {
   const [products, setProducts] = React.useState<Product[]>([]);
@@ -88,12 +89,18 @@ const UserProductsList: React.FC = () => {
             {product.available ? "Available" : "Not available"}
           </p>
           <div className="mt-4 flex space-x-2">
-            <button className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 focus:outline-none focus:ring focus:ring-yellow-300">
+            <Link
+              href={`/products/edit/${product.documentId}`}
+              className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 focus:outline-none focus:ring focus:ring-yellow-300"
+            >
               Edit
-            </button>
-            <button className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300">
+            </Link>
+            <Link
+              href={`/products/delete/${product.documentId}`}
+              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300"
+            >
               Delete
-            </button>
+            </Link>
           </div>
         </div>
       ))}
