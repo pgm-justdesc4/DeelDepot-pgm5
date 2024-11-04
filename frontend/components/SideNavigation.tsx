@@ -6,7 +6,7 @@ export default function SideNavigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-gray-800 p-4 max-w-48 h-full min-h-screen">
+    <nav className="bg-gray-800 p-4 max-w-48 w-full h-full min-h-screen">
       <ul className="space-y-2">
         <li>
           <Link

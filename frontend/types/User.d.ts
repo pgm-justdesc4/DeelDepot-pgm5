@@ -1,7 +1,8 @@
 import UserRole from "./UserRole";
 
 export type User = {
-  id: number;
+  id: id;
+  documentId: string;
   username: string;
   email: string;
   provider: string;

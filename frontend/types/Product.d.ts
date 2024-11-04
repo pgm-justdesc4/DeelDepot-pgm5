@@ -6,5 +6,5 @@ export type Product = {
   description: string;
   images: { url: string }[];
   available: boolean;
-  user: { username: string };
+  user: { id: number; username: string };
 };

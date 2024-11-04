@@ -98,11 +98,11 @@ const ProductDetail: React.FC = () => {
           product.available ? "text-green-500" : "text-red-500"
         }`}
       >
-        {product.available ? "Beschikbaar" : "Niet beschikbaar"}
+        {product.available ? "Available" : "Not available"}
       </p>
       {product.available && (
         <button className="mt-4 bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
-          Vraag aan
+          Ask to rent
         </button>
       )}
     </div>

@@ -4,11 +4,11 @@ import Image from "next/image";
 import { gql, GraphQLClient } from "graphql-request";
 import { Product } from "../types/Product";
 
-interface ProductsOverviewProps {
+interface ProductsListProps {
   limit?: number;
 }
 
-const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
+const ProductsList: React.FC<ProductsListProps> = ({ limit }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
 
   React.useEffect(() => {
@@ -75,11 +75,11 @@ const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
               product.available ? "text-green-500" : "text-red-500"
             }`}
           >
-            {product.available ? "Available" : "Not Available"}
+            {product.available ? "Available" : "Not available"}
           </p>
           {product.available && (
             <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
-              Ask for Rent
+              Ask to Rent
             </button>
           )}
         </a>
@@ -88,4 +88,4 @@ const ProductsOverview: React.FC<ProductsOverviewProps> = ({ limit }) => {
   );
 };
 
-export default ProductsOverview;
+export default ProductsList;

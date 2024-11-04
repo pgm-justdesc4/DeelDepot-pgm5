@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
             name: user.username || "Unknown",
             email: user.email,
             role: user.role?.name || "user",
+            documentId: user.documentId,
           };
         } catch (error) {
           return null;
@@ -78,9 +79,11 @@ export const authOptions: NextAuthOptions = {
       ) {
         token.id = user.id;
         token.role = user.role || "user";
+        token.documentId = user.documentId;
       } else if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.documentId = user.documentId;
       } else if (trigger === "update") {
         token.name = session.user.name;
         token.email = session.user.email;
@@ -91,6 +94,7 @@ export const authOptions: NextAuthOptions = {
       if (token && session.user) {
         session.user.id = token.id as number;
         session.user.role = token.role as UserRole;
+        session.user.documentId = token.documentId as string;
       }
       return session;
     },
