@@ -24,7 +24,6 @@ const ProductDetail: React.FC = () => {
         query Product($documentId: ID!) {
           product(documentId: $documentId) {
             documentId
-            slug
             title
             shortDescription
             description

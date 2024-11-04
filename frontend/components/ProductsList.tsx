@@ -20,7 +20,6 @@ const ProductsList: React.FC<ProductsListProps> = ({ limit }) => {
         query Products {
           products {
             documentId
-            slug
             title
             shortDescription
             images {

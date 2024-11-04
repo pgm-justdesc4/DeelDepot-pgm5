@@ -23,7 +23,6 @@ const UserProductsList: React.FC = () => {
         query UserProducts($userId: ID!) {
           products(filters: { user: { documentId: { eq: $userId } } }) {
             documentId
-            slug
             title
             shortDescription
             images {

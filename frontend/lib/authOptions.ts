@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           const data = await response.json();
-          const { user } = data;
+          const { user, jwt } = data;
 
           if (!user || !user.confirmed || user.blocked) {
             throw new Error("User not confirmed or blocked");
@@ -48,6 +48,7 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             role: user.role?.name || "user",
             documentId: user.documentId,
+            strapiToken: jwt,
           };
         } catch (error) {
           return null;
@@ -80,10 +81,12 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = user.role || "user";
         token.documentId = user.documentId;
+        token.strapiToken = user.strapiToken;
       } else if (user) {
         token.id = user.id;
         token.role = user.role;
         token.documentId = user.documentId;
+        token.strapiToken = user.strapiToken;
       } else if (trigger === "update") {
         token.name = session.user.name;
         token.email = session.user.email;
@@ -95,6 +98,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as number;
         session.user.role = token.role as UserRole;
         session.user.documentId = token.documentId as string;
+        session.user.strapiToken = token.strapiToken as string;
       }
       return session;
     },
