@@ -45,13 +45,13 @@ const ProductsList: React.FC<ProductsListProps> = ({ limit }) => {
   }, []);
 
   if (products.length === 0) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return <div className="text-center text-gray-500">No products found</div>;
   }
 
   const displayedProducts = limit ? products.slice(0, limit) : products;
 
   return (
-    <div className="products-overview grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+    <div className="products-overview max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
       {displayedProducts.map((product) => (
         <a
           href={`/products/${product.documentId}`}
