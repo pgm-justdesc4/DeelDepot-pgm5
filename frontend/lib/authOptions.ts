@@ -42,11 +42,28 @@ export const authOptions: NextAuthOptions = {
             throw new Error("User not confirmed or blocked");
           }
 
+          // Fetch the user role
+          const roleResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}?populate=role`,
+            {
+              headers: {
+                Authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+
+          if (!roleResponse.ok) {
+            throw new Error("Failed to fetch user role");
+          }
+
+          const roleData = await roleResponse.json();
+          const roleName = roleData.role.name;
+
           return {
             id: user.id,
             name: user.username || "Unknown",
             email: user.email,
-            role: user.role?.name || "user",
+            role: roleName,
             documentId: user.documentId,
             strapiToken: jwt,
           };
@@ -79,7 +96,7 @@ export const authOptions: NextAuthOptions = {
         (account.provider === "github" || account.provider === "google")
       ) {
         token.id = user.id;
-        token.role = user.role || "user";
+        token.role = user.role;
         token.documentId = user.documentId;
         token.strapiToken = user.strapiToken;
       } else if (user) {
