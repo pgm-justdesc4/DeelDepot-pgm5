@@ -10,13 +10,18 @@ const Navigation: React.FC = () => {
 
   return (
     <nav className="bg-gray-800">
-      <div className=" p-4 flex justify-between items-center max-w-7xl mx-auto">
+      <div className="p-4 flex justify-between items-center max-w-7xl mx-auto">
         <Link href="/" className="text-white text-3xl font-bold">
           DeelDepot
         </Link>
         <div className="flex items-center justify-center space-x-4">
           {session ? (
             <>
+              {session.user?.role === "Admin" && (
+                <Link href="/admin" className="text-white">
+                  Admin Panel
+                </Link>
+              )}
               <Link href="/dashboard" className="text-white">
                 Dashboard
               </Link>
