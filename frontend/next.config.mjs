@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["localhost"],
+    domains: [
+      "eindoprdacht-programming-5-pgm-justdesc4.onrender.com",
+      "localhost",
+    ],
   },
 };
 
