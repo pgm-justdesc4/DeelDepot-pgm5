@@ -31,7 +31,6 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!response.ok) {
-            const errorText = await response.text();
             throw new Error("Failed to authenticate");
           }
 
