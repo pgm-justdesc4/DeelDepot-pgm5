@@ -95,7 +95,7 @@ export const authOptions: NextAuthOptions = {
         (account.provider === "github" || account.provider === "google")
       ) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = "thirdParty";
         token.documentId = user.documentId;
         token.strapiToken = user.strapiToken;
       } else if (user) {
