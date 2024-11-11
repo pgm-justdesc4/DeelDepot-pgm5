@@ -8,8 +8,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center pt-4 min-h-screen bg-gray-100">
-      <p className="text-gray-800 mb-1">Filter:</p>
-      <ProductsList limit={10} />
+      <ProductsList limit={10} filter="available" />
       <a
         href="/products"
         className="view-all-products bg-white shadow-md rounded-lg p-4 flex items-center justify-center"
