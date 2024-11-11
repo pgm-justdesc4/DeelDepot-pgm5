@@ -62,7 +62,8 @@ const ManageUsers: React.FC = () => {
         const userRoleResponse = await graphQLClient.request(
           fetchUserRoleQuery
         );
-        const roles = userRoleResponse.usersPermissionsRoles;
+        const roles = (userRoleResponse as { usersPermissionsRoles: any })
+          .usersPermissionsRoles;
 
         return users.map((user) => {
           const userRole = roles.find((role: any) =>
