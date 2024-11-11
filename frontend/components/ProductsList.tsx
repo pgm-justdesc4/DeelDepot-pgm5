@@ -12,8 +12,8 @@ interface ProductsListProps {
 
 const ProductsList: React.FC<ProductsListProps> = ({
   limit,
-  filter = "all",
-  searchQuery = "",
+  filter,
+  searchQuery,
 }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
 
