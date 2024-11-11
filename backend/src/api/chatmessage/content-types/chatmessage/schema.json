@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "chatmessages",
+  "info": {
+    "singularName": "chatmessage",
+    "pluralName": "chatmessages",
+    "displayName": "Chatmessage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "chatmessageId": {
+      "type": "integer"
+    },
+    "content": {
+      "type": "text"
+    },
+    "chatroom": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::chatroom.chatroom"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
