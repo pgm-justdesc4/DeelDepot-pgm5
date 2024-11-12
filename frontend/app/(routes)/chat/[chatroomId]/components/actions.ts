@@ -17,7 +17,7 @@ const CREATE_CHATMESSAGE = gql`
       chatroom {
         documentId
       }
-      users_permissions_user {
+      users_permissions_users {
         username
         documentId
       }
@@ -49,7 +49,11 @@ export const createChatMessage = async ({
       STRAPI_GRAPHQL_URL,
       CREATE_CHATMESSAGE,
       {
-        data: { content, chatroom: chatroomId, users_permissions_user: userId },
+        data: {
+          content,
+          chatroom: chatroomId,
+          users_permissions_users: userId,
+        },
       },
       headers
     );

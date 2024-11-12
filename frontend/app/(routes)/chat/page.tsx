@@ -15,7 +15,7 @@ const GET_CHATROOMS = gql`
       documentId
       createdAt
       title
-      users_permissions_user {
+      users_permissions_users {
         documentId
         username
       }
@@ -28,7 +28,7 @@ const ADD_CHATROOM = gql`
     createChatroom(data: $data) {
       documentId
       title
-      users_permissions_user {
+      users_permissions_users {
         username
         documentId
       }
@@ -87,7 +87,7 @@ const ChatPage = () => {
         ADD_CHATROOM,
         {
           data: {
-            users_permissions_user: session?.user?.documentId,
+            users_permissions_users: session?.user?.documentId,
             title: newRoomName,
           },
         },
@@ -137,8 +137,8 @@ const ChatPage = () => {
             >
               {room.title}
             </a>
-            {room.users_permissions_user &&
-              room.users_permissions_user.documentId ===
+            {room.users_permissions_users &&
+              room.users_permissions_users.documentId ===
                 session?.user?.documentId && (
                 <DeleteButton
                   handleDeleteRoom={() => handleDeleteRoom(room.documentId)}

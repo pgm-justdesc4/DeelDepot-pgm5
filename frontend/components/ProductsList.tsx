@@ -17,7 +17,7 @@ const ADD_CHATROOM = gql`
     createChatroom(data: $data) {
       documentId
       title
-      users_permissions_user {
+      users_permissions_users {
         username
         documentId
       }
@@ -82,7 +82,10 @@ const ProductsList: React.FC<ProductsListProps> = ({
         ADD_CHATROOM,
         {
           data: {
-            users_permissions_user: session.user.documentId,
+            users_permissions_users: [
+              session.user.documentId,
+              product.user.documentId,
+            ],
             title: `${product.title}`,
           },
         },

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "chatroom",
     "pluralName": "chatrooms",
-    "displayName": "Chatroom"
+    "displayName": "Chatroom",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,10 +18,11 @@
     "enabled": {
       "type": "boolean"
     },
-    "users_permissions_user": {
+    "users_permissions_users": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user"
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "chatroom"
     }
   }
 }
