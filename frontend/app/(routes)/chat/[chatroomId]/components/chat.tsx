@@ -45,7 +45,7 @@ const Chat: React.FC<ChatProps> = ({
             {
               userId: receivedUserId,
               content: content,
-              user: { id: receivedUserId, username: receivedUsername },
+              user: { documentId: receivedUserId, username: receivedUsername },
             },
           ]);
         }

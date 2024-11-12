@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { gql, GraphQLClient } from "graphql-request";
+import { gql, GraphQLClient, request } from "graphql-request";
 import { Product } from "../types/Product";
+import { useSession } from "next-auth/react";
+import { Chatroom } from "@/types/chatroom";
 
 interface ProductsListProps {
   limit?: number;
@@ -10,12 +12,26 @@ interface ProductsListProps {
   searchQuery: string;
 }
 
+const ADD_CHATROOM = gql`
+  mutation CreateChatroom($data: ChatroomInput!) {
+    createChatroom(data: $data) {
+      documentId
+      title
+      users_permissions_user {
+        username
+        documentId
+      }
+    }
+  }
+`;
+
 const ProductsList: React.FC<ProductsListProps> = ({
   limit,
   filter,
   searchQuery,
 }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
+  const { data: session } = useSession();
 
   React.useEffect(() => {
     const fetchProducts = async () => {
@@ -33,6 +49,7 @@ const ProductsList: React.FC<ProductsListProps> = ({
             }
             user {
               username
+              documentId
             }
             available
           }
@@ -49,6 +66,33 @@ const ProductsList: React.FC<ProductsListProps> = ({
 
     fetchProducts();
   }, []);
+
+  const handleAskToRent = async (product: Product) => {
+    if (!session?.user?.strapiToken) return;
+
+    const headers = {
+      Authorization: `Bearer ${session.user.strapiToken}`,
+    };
+
+    try {
+      const response = await request<{
+        createChatroom: { chatroom: Chatroom };
+      }>(
+        `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+        ADD_CHATROOM,
+        {
+          data: {
+            users_permissions_user: session.user.documentId,
+            title: `${product.title}`,
+          },
+        },
+        headers
+      );
+      window.location.href = `/chat/${response.createChatroom.chatroom.documentId}`;
+    } catch (error) {
+      console.error("Error creating chatroom:", error);
+    }
+  };
 
   const filteredProducts = products.filter(
     (product) =>
@@ -91,7 +135,13 @@ const ProductsList: React.FC<ProductsListProps> = ({
             {product.available ? "Available" : "Not available"}
           </p>
           {product.available && (
-            <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+            <button
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              onClick={(e) => {
+                e.preventDefault();
+                handleAskToRent(product);
+              }}
+            >
               Ask to Rent
             </button>
           )}
