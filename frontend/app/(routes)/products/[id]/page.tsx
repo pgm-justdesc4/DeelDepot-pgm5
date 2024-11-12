@@ -2,16 +2,40 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import { gql, GraphQLClient } from "graphql-request";
+import { gql, GraphQLClient, request } from "graphql-request";
 import { Product } from "@/types/Product";
 import Slider from "react-slick";
+import { useSession } from "next-auth/react";
+import { Chatroom } from "@/types/chatroom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
+const ADD_CHATROOM = gql`
+  mutation CreateChatroom($data: ChatroomInput!) {
+    createChatroom(data: $data) {
+      documentId
+      title
+      users_permissions_users {
+        username
+        documentId
+      }
+    }
+  }
+`;
+
+const CHECK_CHATROOM = gql`
+  query CheckChatroom($filters: ChatroomFiltersInput) {
+    chatrooms(filters: $filters) {
+      documentId
+    }
+  }
+`;
 
 const ProductDetail: React.FC = () => {
   const params = useParams();
   const { id: documentId } = params;
   const [product, setProduct] = React.useState<Product | null>(null);
+  const { data: session } = useSession();
 
   React.useEffect(() => {
     const fetchProduct = async () => {
@@ -32,6 +56,7 @@ const ProductDetail: React.FC = () => {
             }
             user {
               username
+              documentId
             }
             available
           }
@@ -48,6 +73,55 @@ const ProductDetail: React.FC = () => {
 
     fetchProduct();
   }, [documentId]);
+
+  const handleAskToRent = async () => {
+    if (!session?.user?.strapiToken || !product) return;
+
+    const headers = {
+      Authorization: `Bearer ${session.user.strapiToken}`,
+    };
+
+    try {
+      const userIds = [session.user.documentId, product.user.documentId];
+      const existingChatrooms = await request<{
+        chatrooms: Chatroom[];
+      }>(
+        `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+        CHECK_CHATROOM,
+        {
+          filters: {
+            users_permissions_users: {
+              documentId: {
+                in: userIds,
+              },
+            },
+          },
+        },
+        headers
+      );
+
+      if (existingChatrooms.chatrooms.length > 0) {
+        window.location.href = `/chat/${existingChatrooms.chatrooms[0].documentId}`;
+      } else {
+        const response = await request<{
+          createChatroom: Chatroom;
+        }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+          ADD_CHATROOM,
+          {
+            data: {
+              users_permissions_users: userIds,
+              title: `${product.title}`,
+            },
+          },
+          headers
+        );
+        window.location.href = `/chat/${response.createChatroom.documentId}`;
+      }
+    } catch (error) {
+      console.error("Error handling chatroom:", error);
+    }
+  };
 
   if (!product) {
     return <div className="text-center text-gray-500">Loading...</div>;
@@ -100,8 +174,11 @@ const ProductDetail: React.FC = () => {
         {product.available ? "Available" : "Not available"}
       </p>
       {product.available && (
-        <button className="mt-4 bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
-          Ask to rent
+        <button
+          className="mt-4 bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+          onClick={handleAskToRent}
+        >
+          Contact
         </button>
       )}
     </div>

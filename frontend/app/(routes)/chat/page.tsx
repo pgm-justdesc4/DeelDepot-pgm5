@@ -101,30 +101,44 @@ const ChatPage = () => {
 
   return (
     <div className="container max-w-6xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Chatrooms</h1>
-      <ul className="space-y-2">
-        {chatrooms.map((room: Chatroom) => (
-          <li
-            key={room.documentId}
-            className="p-2 bg-gray-100 rounded shadow flex justify-between items-center"
-          >
-            <a
-              href={`/chat/${room.documentId}`}
-              className="text-blue-500 hover:underline"
+      <h1 className="text-3xl text-center font-bold mb-4">Messages</h1>
+      {chatrooms.length === 0 ? (
+        <p className="text-center text-gray-500">No messages found.</p>
+      ) : (
+        <ul className="space-y-2">
+          {chatrooms.map((room: Chatroom) => (
+            <li
+              key={room.documentId}
+              className="p-2 pr-5 bg-gray-100 max-w-4xl mx-auto rounded shadow flex justify-between items-center"
             >
-              {room.title}
-            </a>
-            {room.users_permissions_users &&
-              room.users_permissions_users.documentId ===
-                session?.user?.documentId && (
-                <DeleteButton
-                  handleDeleteRoom={() => handleDeleteRoom(room.documentId)}
-                  room={room}
-                />
-              )}
-          </li>
-        ))}
-      </ul>
+              <div className="flex justify-between gap-5 items-center">
+                <a
+                  href={`/chat/${room.documentId}`}
+                  className="text-blue-500 ml-7 hover:underline"
+                >
+                  {room.title}
+                </a>
+                <p className="text-sm text-gray-600">
+                  Users:{" "}
+                  <strong>
+                    {Array.isArray(room.users_permissions_users) &&
+                      room.users_permissions_users
+                        .map(
+                          (user: { documentId: string; username: string }) =>
+                            user.username
+                        )
+                        .join(", ")}
+                  </strong>
+                </p>
+              </div>
+              <DeleteButton
+                handleDeleteRoom={() => handleDeleteRoom(room.documentId)}
+                room={room}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

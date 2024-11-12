@@ -25,6 +25,9 @@ const Navigation: React.FC = () => {
               <Link href="/dashboard" className="text-white">
                 Dashboard
               </Link>
+              <Link href={"/chat"} className="text-white">
+                Inbox
+              </Link>
               <LogoutButton />
             </>
           ) : (

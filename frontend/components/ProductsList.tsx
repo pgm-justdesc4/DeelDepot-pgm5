@@ -1,10 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { gql, GraphQLClient, request } from "graphql-request";
+import { gql, GraphQLClient } from "graphql-request";
 import { Product } from "../types/Product";
-import { useSession } from "next-auth/react";
-import { Chatroom } from "@/types/chatroom";
 
 interface ProductsListProps {
   limit?: number;
@@ -12,34 +10,12 @@ interface ProductsListProps {
   searchQuery: string;
 }
 
-const ADD_CHATROOM = gql`
-  mutation CreateChatroom($data: ChatroomInput!) {
-    createChatroom(data: $data) {
-      documentId
-      title
-      users_permissions_users {
-        username
-        documentId
-      }
-    }
-  }
-`;
-
-const CHECK_CHATROOM = gql`
-  query CheckChatroom($filters: ChatroomFiltersInput) {
-    chatrooms(filters: $filters) {
-      documentId
-    }
-  }
-`;
-
 const ProductsList: React.FC<ProductsListProps> = ({
   limit,
   filter,
   searchQuery,
 }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
-  const { data: session } = useSession();
 
   React.useEffect(() => {
     const fetchProducts = async () => {
@@ -74,55 +50,6 @@ const ProductsList: React.FC<ProductsListProps> = ({
 
     fetchProducts();
   }, []);
-
-  const handleAskToRent = async (product: Product) => {
-    if (!session?.user?.strapiToken) return;
-
-    const headers = {
-      Authorization: `Bearer ${session.user.strapiToken}`,
-    };
-
-    try {
-      const userIds = [session.user.documentId, product.user.documentId];
-      const existingChatrooms = await request<{
-        chatrooms: Chatroom[];
-      }>(
-        `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
-        CHECK_CHATROOM,
-        {
-          filters: {
-            users_permissions_users: {
-              documentId: {
-                in: userIds,
-              },
-            },
-          },
-        },
-        headers
-      );
-
-      if (existingChatrooms.chatrooms.length > 0) {
-        window.location.href = `/chat/${existingChatrooms.chatrooms[0].documentId}`;
-      } else {
-        const response = await request<{
-          createChatroom: Chatroom;
-        }>(
-          `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
-          ADD_CHATROOM,
-          {
-            data: {
-              users_permissions_users: userIds,
-              title: `${product.title}`,
-            },
-          },
-          headers
-        );
-        window.location.href = `/chat/${response.createChatroom.documentId}`;
-      }
-    } catch (error) {
-      console.error("Error handling chatroom:", error);
-    }
-  };
 
   const filteredProducts = products.filter(
     (product) =>
@@ -164,17 +91,6 @@ const ProductsList: React.FC<ProductsListProps> = ({
           >
             {product.available ? "Available" : "Not available"}
           </p>
-          {product.available && (
-            <button
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-              onClick={(e) => {
-                e.preventDefault();
-                handleAskToRent(product);
-              }}
-            >
-              Ask to Rent
-            </button>
-          )}
         </a>
       ))}
     </div>

@@ -34,22 +34,26 @@ const Page = async ({ params }: PageProps) => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto pt-3">
-      <a href="/chat" className="mb-4 text-blue-500 text-lg">
-        {" "}
+    <div className="max-w-4xl mx-auto pt-6">
+      <a href="/chat" className="mb-6 text-blue-600 text-lg hover:underline">
         &larr; Back to chatrooms
       </a>
-      <div className="flex flex-col items-center justify-center pt-12 p-4">
-        <h1 className="text-3xl font-bold mb-4">Chatroom: {chatroomName}</h1>
-        <div className="text-lg mb-4">
-          <p>Users:</p>
-          {users.map((user: any) => (
-            <span key={user.username} className="mr-2">
-              {user.username}
-            </span>
-          ))}
+      <div className="flex flex-col items-center pt-8 px-4">
+        <h1 className="text-4xl font-bold mb-6">{chatroomName}</h1>
+        <div className="text-lg mb-6">
+          <p className="font-semibold text-gray-600">Users:</p>
+          <div className="flex flex-wrap">
+            {users.map((user: any) => (
+              <span
+                key={user.username}
+                className="mr-2 mb-2 bg-gray-200 px-2 py-1 rounded"
+              >
+                {user.username}
+              </span>
+            ))}
+          </div>
         </div>
-        <div className="w-full max-w-md bg-white rounded-lg shadow-md p-4 mb-4">
+        <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
           <Chat
             messages={messages}
             userId={userId}
