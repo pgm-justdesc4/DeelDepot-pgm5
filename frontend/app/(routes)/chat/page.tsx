@@ -69,7 +69,16 @@ const ChatPage = () => {
       {},
       headers
     );
-    return response.chatrooms;
+    // Filter chatrooms where the user is a member
+    const userChatrooms = response.chatrooms.filter(
+      (chatroom) =>
+        Array.isArray(chatroom.users_permissions_users) &&
+        chatroom.users_permissions_users.some(
+          (user: { documentId: string; username: string }) =>
+            user.documentId === session?.user.documentId
+        )
+    );
+    return userChatrooms;
   }
 
   // Handle adding a room

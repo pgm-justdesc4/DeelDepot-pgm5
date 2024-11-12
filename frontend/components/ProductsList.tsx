@@ -25,6 +25,14 @@ const ADD_CHATROOM = gql`
   }
 `;
 
+const CHECK_CHATROOM = gql`
+  query CheckChatroom($userIds: [ID!]!) {
+    chatrooms(where: { users_permissions_users: { id_in: $userIds } }) {
+      documentId
+    }
+  }
+`;
+
 const ProductsList: React.FC<ProductsListProps> = ({
   limit,
   filter,
@@ -75,25 +83,36 @@ const ProductsList: React.FC<ProductsListProps> = ({
     };
 
     try {
-      const response = await request<{
-        createChatroom: Chatroom;
+      const userIds = [session.user.documentId, product.user.documentId];
+      const existingChatrooms = await request<{
+        chatrooms: Chatroom[];
       }>(
         `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
-        ADD_CHATROOM,
-        {
-          data: {
-            users_permissions_users: [
-              session.user.documentId,
-              product.user.documentId,
-            ],
-            title: `${product.title}`,
-          },
-        },
+        CHECK_CHATROOM,
+        { userIds },
         headers
       );
-      window.location.href = `/chat/${response.createChatroom.documentId}`;
+
+      if (existingChatrooms.chatrooms.length > 0) {
+        window.location.href = `/chat/${existingChatrooms.chatrooms[0].documentId}`;
+      } else {
+        const response = await request<{
+          createChatroom: Chatroom;
+        }>(
+          `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+          ADD_CHATROOM,
+          {
+            data: {
+              users_permissions_users: userIds,
+              title: `${product.title}`,
+            },
+          },
+          headers
+        );
+        window.location.href = `/chat/${response.createChatroom.documentId}`;
+      }
     } catch (error) {
-      console.error("Error creating chatroom:", error);
+      console.error("Error handling chatroom:", error);
     }
   };
 
