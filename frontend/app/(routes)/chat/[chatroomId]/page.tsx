@@ -22,7 +22,7 @@ const Page = async ({ params }: PageProps) => {
       userId: message.user.id,
     })
   );
-  const userId = session?.user.documentId as unknown as string;
+  const userId = session?.user.documentId as string;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -32,7 +32,7 @@ const Page = async ({ params }: PageProps) => {
           messages={messages}
           userId={userId}
           chatroomId={chatroomId}
-          username=""
+          username={session?.user.name as string}
           pusherInstance=""
         />
       </div>
