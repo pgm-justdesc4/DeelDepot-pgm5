@@ -1,10 +1,17 @@
 "use server";
-import { Message } from "@/types/Message";
-import request, { gql } from "graphql-request";
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL;
-const BEARER_TOKEN = process.env.NEXT_PUBLIC_STRAPI_TOKEN;
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOptions";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function postMessage(roomId: string, content: string, userId: string) {
+  const session = await getServerSession(authOptions);
+  const BEARER_TOKEN = session?.user.strapiToken;
+
+  if (!BEARER_TOKEN) {
+    throw new Error("Bearer token is not defined");
+  }
+
   const mutation = `
         mutation($data: MessageInput!) {
             createMessage(data: $data) {

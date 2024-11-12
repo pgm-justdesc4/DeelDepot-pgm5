@@ -66,10 +66,16 @@ export const triggerPusherEvent = async ({
   chatroomId,
   userId,
   content,
+  username,
 }: {
   chatroomId: string;
   userId: string;
   content: string;
+  username: string;
 }) => {
-  pusherServer.trigger(chatroomId, "incoming-message", { userId, content });
+  pusherServer.trigger(chatroomId, "incoming-message", {
+    userId,
+    username,
+    content,
+  });
 };
