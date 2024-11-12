@@ -26,8 +26,8 @@ const ADD_CHATROOM = gql`
 `;
 
 const CHECK_CHATROOM = gql`
-  query CheckChatroom($userIds: [ID!]!) {
-    chatrooms(where: { users_permissions_users: { id_in: $userIds } }) {
+  query CheckChatroom($filters: ChatroomFiltersInput) {
+    chatrooms(filters: $filters) {
       documentId
     }
   }
@@ -89,7 +89,15 @@ const ProductsList: React.FC<ProductsListProps> = ({
       }>(
         `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
         CHECK_CHATROOM,
-        { userIds },
+        {
+          filters: {
+            users_permissions_users: {
+              documentId: {
+                in: userIds,
+              },
+            },
+          },
+        },
         headers
       );
 

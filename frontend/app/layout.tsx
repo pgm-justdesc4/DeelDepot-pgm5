@@ -12,7 +12,7 @@ interface LayoutProps {
 const RootLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gray-100">
         <SessionProvider>
           <Navigation />
           {children}

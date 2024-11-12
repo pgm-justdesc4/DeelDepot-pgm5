@@ -16,6 +16,49 @@ type GraphQLMessage = {
   };
 };
 
+export const fetchChatroomDetails = async (
+  chatroomId: string,
+  token: string
+) => {
+  const query = `
+    query Query($documentId: ID!) {
+      chatroom(documentId: $documentId) {
+        title
+        users_permissions_users {
+          username
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    documentId: chatroomId,
+  };
+
+  const response = await fetch(`${baseUrl}/graphql`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorMessage = await response.text();
+    console.error(
+      `Failed to fetch chatroom details: ${response.status} - ${errorMessage}`
+    );
+    throw new Error("Failed to fetch chatroom details");
+  }
+
+  const result = await response.json();
+  return result.data.chatroom;
+};
+
 export const fetchMessages = async (roomId: string, token: string) => {
   const GET_MESSAGES = gql`
     query Chatmessages($filters: ChatmessageFiltersInput) {

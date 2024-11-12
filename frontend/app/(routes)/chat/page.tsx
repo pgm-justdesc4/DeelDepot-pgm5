@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { gql, request } from "graphql-request";
-import AddRoom from "./components/AddRoom";
 import { useSession } from "next-auth/react";
 import DeleteButton from "./components/DeleteButton";
 import { Chatroom } from "@/types/chatroom";
@@ -81,34 +80,6 @@ const ChatPage = () => {
     return userChatrooms;
   }
 
-  // Handle adding a room
-  const handleAddRoom = async (newRoomName: string) => {
-    if (newRoomName.trim() === "") return;
-    const headers = {
-      Authorization: `Bearer ${session?.user.strapiToken}`,
-    };
-
-    try {
-      const response = await request<{
-        createChatroom: { chatroom: Chatroom };
-      }>(
-        STRAPI_GRAPHQL_URL,
-        ADD_CHATROOM,
-        {
-          data: {
-            users_permissions_users: session?.user?.documentId,
-            title: newRoomName,
-          },
-        },
-        headers
-      );
-      setChatrooms([...chatrooms, response.createChatroom.chatroom]);
-      window.location.reload(); // Refresh the page after adding a room
-    } catch (error) {
-      console.error("Error adding chatroom:", error);
-    }
-  };
-
   // Handle deleting a room
   const handleDeleteRoom = async (documentId: string) => {
     const headers = {
@@ -129,11 +100,8 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container max-w-6xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Chatrooms</h1>
-      <div className="mb-4">
-        <AddRoom handleAddRoom={handleAddRoom} />
-      </div>
       <ul className="space-y-2">
         {chatrooms.map((room: Chatroom) => (
           <li
