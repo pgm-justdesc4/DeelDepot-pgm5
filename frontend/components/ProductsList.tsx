@@ -83,7 +83,7 @@ const ProductsList: React.FC<ProductsListProps> = ({
             width={500}
             height={500}
           />
-          <p className="text-gray-600">Posted by: {product.user.username}</p>
+          <p className="text-gray-600">User: {product.user.username}</p>
           <p
             className={`mt-2 ${
               product.available ? "text-green-500" : "text-red-500"

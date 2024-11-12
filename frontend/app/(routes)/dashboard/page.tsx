@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const Dashboard = () => {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
       <SideNavigation />
-      <div className="flex-1 p-6">
+      <div className="p-6 max-w-6xl mx-auto">
         <div className="flex justify-center">
           <Link
             href="/products/new"

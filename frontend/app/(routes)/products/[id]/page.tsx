@@ -139,7 +139,7 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div className="product-detail p-6 max-w-7xl mx-auto">
-      <a href="/products" className="text-blue-500 hover:underline">
+      <a href="/products" className="text-blue-500 text-lg hover:underline">
         ← Products
       </a>
       <h1 className="text-4xl font-bold mb-6 text-center">{product.title}</h1>
@@ -161,26 +161,28 @@ const ProductDetail: React.FC = () => {
           ))}
         </Slider>
       </div>
-      <p className="text-gray-700 mb-6">{product.description}</p>
-      <p className="text-gray-600 mb-2">
-        Posted by:{" "}
-        <span className="font-semibold">{product.user.username}</span>
-      </p>
-      <p
-        className={`mb-4 ${
-          product.available ? "text-green-500" : "text-red-500"
-        }`}
-      >
-        {product.available ? "Available" : "Not available"}
-      </p>
-      {product.available && (
-        <button
-          className="mt-4 bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-          onClick={handleAskToRent}
+      <hr className="mb-6" />
+      <div className="text-center text-lg">
+        <p className="text-gray-700 mb-6">{product.description}</p>
+        <p className="text-gray-600 mb-2">
+          Owner: <span className="font-semibold">{product.user.username}</span>
+        </p>
+        <p
+          className={`mb-4 ${
+            product.available ? "text-green-500" : "text-red-500"
+          }`}
         >
-          Contact
-        </button>
-      )}
+          {product.available ? "Available" : "Not available"}
+        </p>
+        {product.available && (
+          <button
+            className="mt-4 bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+            onClick={handleAskToRent}
+          >
+            Contact
+          </button>
+        )}
+      </div>
     </div>
   );
 };

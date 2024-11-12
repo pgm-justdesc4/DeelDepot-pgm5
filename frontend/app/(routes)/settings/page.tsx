@@ -3,8 +3,10 @@ import SettingsForm from "./components/SettingsForm";
 
 export default function SettingsPage() {
   return (
-    <div className="flex">
-      <SideNavigation />
+    <div>
+      <div className="mb-8">
+        <SideNavigation />
+      </div>
       <SettingsForm />
     </div>
   );

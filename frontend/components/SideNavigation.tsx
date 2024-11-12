@@ -6,14 +6,14 @@ export default function SideNavigation() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-gray-800 p-4 max-w-48 w-full h-full min-h-screen">
-      <ul className="space-y-2">
+    <nav className="bg-blue-800 p-4 w-full">
+      <ul className="flex space-x-4 justify-center">
         <li>
           <Link
             href="/"
             className={`${
-              pathname === "/" ? "bg-gray-700" : ""
-            } text-white hover:bg-gray-700 px-3 py-2 rounded-md block`}
+              pathname === "/" ? "bg-blue-700" : ""
+            } text-white hover:bg-blue-700 px-3 py-2 rounded-md block`}
           >
             Home
           </Link>
@@ -22,8 +22,8 @@ export default function SideNavigation() {
           <Link
             href="/dashboard"
             className={`${
-              pathname === "/dashboard" ? "bg-gray-700" : ""
-            } text-white hover:bg-gray-700 px-3 py-2 rounded-md block`}
+              pathname === "/dashboard" ? "bg-blue-700" : ""
+            } text-white hover:bg-blue-700 px-3 py-2 rounded-md block`}
           >
             Dashboard
           </Link>
@@ -32,8 +32,8 @@ export default function SideNavigation() {
           <Link
             href="/settings"
             className={`${
-              pathname === "/settings" ? "bg-gray-700" : ""
-            } text-white hover:bg-gray-700 px-3 py-2 rounded-md block`}
+              pathname === "/settings" ? "bg-blue-700" : ""
+            } text-white hover:bg-blue-700 px-3 py-2 rounded-md block`}
           >
             Account Settings
           </Link>
