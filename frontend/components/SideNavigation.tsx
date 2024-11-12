@@ -7,7 +7,7 @@ export default function SideNavigation() {
 
   return (
     <nav className="bg-blue-800 p-4 w-full">
-      <ul className="flex space-x-4 justify-center">
+      <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 justify-center">
         <li>
           <Link
             href="/"

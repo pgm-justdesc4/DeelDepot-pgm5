@@ -10,17 +10,17 @@ const ProductsPage: React.FC = () => {
 
   return (
     <div className="pt-4 min-h-screen bg-gray-100">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-semibold text-center text-gray-800 mb-7">
           Products
         </h1>
         <hr className="mb-4" />
-        <div className="flex justify-between">
+        <div className="flex flex-col-reverse sm:flex-row justify-between">
           <SearchProducts
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
           />
-          <div>
+          <div className="mt-4 sm:mt-0 sm:ml-4">
             <p className="text-gray-800 text-center mb-1">Filter:</p>
             <FilterProducts filter={filter} setFilter={setFilter} />
           </div>
