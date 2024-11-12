@@ -1,7 +1,7 @@
 export type Chatroom = {
   documentId: string;
   title: string;
-  creatorId: {
+  users_permissions_user: {
     documentId: string;
     username: string;
   };

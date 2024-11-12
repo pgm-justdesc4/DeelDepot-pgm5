@@ -1,8 +1,8 @@
+"use client";
+import { useState, useEffect } from "react";
 import { gql, request } from "graphql-request";
 import AddRoom from "./components/AddRoom";
-import { revalidatePath } from "next/cache";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/authOptions";
+import { useSession } from "next-auth/react";
 import DeleteButton from "./components/DeleteButton";
 import { Chatroom } from "@/types/chatroom";
 
@@ -14,9 +14,8 @@ const GET_CHATROOMS = gql`
     chatrooms {
       documentId
       createdAt
-      documentId
       title
-      creatorId {
+      users_permissions_user {
         documentId
         username
       }
@@ -29,7 +28,7 @@ const ADD_CHATROOM = gql`
     createChatroom(data: $data) {
       documentId
       title
-      creatorId {
+      users_permissions_user {
         username
         documentId
       }
@@ -45,52 +44,68 @@ const DELETE_CHATROOM = gql`
   }
 `;
 
-async function fetchChatrooms(token: string) {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  const response = await request<{ chatrooms: Chatroom[] }>(
-    STRAPI_GRAPHQL_URL,
-    GET_CHATROOMS,
-    {},
-    headers
-  );
-  return response.chatrooms;
-}
+const ChatPage = () => {
+  const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
+  const { data: session } = useSession();
 
-const ChatPage = async () => {
-  const session = await getServerSession(authOptions);
-  const chatrooms = (await fetchChatrooms(session.user.strapiToken)) || [];
-  console.log("session", session);
+  // Fetch chatrooms on component mount
+  useEffect(() => {
+    async function initialize() {
+      if (session?.user.strapiToken) {
+        const fetchedChatrooms = await fetchChatrooms(session.user.strapiToken);
+        setChatrooms(fetchedChatrooms);
+      }
+    }
 
+    initialize();
+  }, [session]);
+
+  // Fetch chatrooms from Strapi
+  async function fetchChatrooms(token: string) {
+    const headers = { Authorization: `Bearer ${token}` };
+    const response = await request<{ chatrooms: Chatroom[] }>(
+      STRAPI_GRAPHQL_URL,
+      GET_CHATROOMS,
+      {},
+      headers
+    );
+    return response.chatrooms;
+  }
+
+  // Handle adding a room
   const handleAddRoom = async (newRoomName: string) => {
-    "use server";
-
     if (newRoomName.trim() === "") return;
     const headers = {
-      Authorization: `Bearer ${session.user.strapiToken}`,
+      Authorization: `Bearer ${session?.user.strapiToken}`,
     };
+
     try {
       const response = await request<{
         createChatroom: { chatroom: Chatroom };
       }>(
         STRAPI_GRAPHQL_URL,
         ADD_CHATROOM,
-        { data: { creatorId: session?.user?.uid || null, title: newRoomName } },
+        {
+          data: {
+            users_permissions_user: session?.user?.documentId,
+            title: newRoomName,
+          },
+        },
         headers
       );
-      chatrooms.push(response.createChatroom.chatroom);
+      setChatrooms([...chatrooms, response.createChatroom.chatroom]);
+      window.location.reload(); // Refresh the page after adding a room
     } catch (error) {
       console.error("Error adding chatroom:", error);
     }
-    revalidatePath("/chat");
   };
 
+  // Handle deleting a room
   const handleDeleteRoom = async (documentId: string) => {
-    "use server";
     const headers = {
-      Authorization: `Bearer ${session.user.strapiToken}`,
+      Authorization: `Bearer ${session?.user.strapiToken}`,
     };
+
     try {
       await request(
         STRAPI_GRAPHQL_URL,
@@ -98,14 +113,10 @@ const ChatPage = async () => {
         { documentId },
         headers
       );
-      const index = chatrooms.findIndex(
-        (room: Chatroom) => room.documentId === documentId
-      );
-      chatrooms.splice(index, 1);
+      setChatrooms(chatrooms.filter((room) => room.documentId !== documentId));
     } catch (error) {
       console.error("Error deleting chatroom:", error);
     }
-    revalidatePath("/chat");
   };
 
   return (
@@ -121,14 +132,18 @@ const ChatPage = async () => {
             className="p-2 bg-gray-100 rounded shadow flex justify-between items-center"
           >
             <a
-              href={`/chat-pusher/${room.documentId}`}
+              href={`/chat/${room.documentId}`}
               className="text-blue-500 hover:underline"
             >
               {room.title}
             </a>
-            {room.creatorId &&
-              room.creatorId.documentId === session?.user?.uid && (
-                <DeleteButton handleDeleteRoom={handleDeleteRoom} room={room} />
+            {room.users_permissions_user &&
+              room.users_permissions_user.documentId ===
+                session?.user?.documentId && (
+                <DeleteButton
+                  handleDeleteRoom={() => handleDeleteRoom(room.documentId)}
+                  room={room}
+                />
               )}
           </li>
         ))}
