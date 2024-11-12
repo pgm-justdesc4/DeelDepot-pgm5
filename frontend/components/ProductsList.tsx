@@ -76,7 +76,7 @@ const ProductsList: React.FC<ProductsListProps> = ({
 
     try {
       const response = await request<{
-        createChatroom: { chatroom: Chatroom };
+        createChatroom: Chatroom;
       }>(
         `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
         ADD_CHATROOM,
@@ -88,7 +88,7 @@ const ProductsList: React.FC<ProductsListProps> = ({
         },
         headers
       );
-      window.location.href = `/chat/${response.createChatroom.chatroom.documentId}`;
+      window.location.href = `/chat/${response.createChatroom.documentId}`;
     } catch (error) {
       console.error("Error creating chatroom:", error);
     }
