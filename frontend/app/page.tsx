@@ -16,7 +16,7 @@ const Home: React.FC = () => {
       <hr className="my-4 sm:my-8 border-gray-300" />
       <div className="flex flex-col items-center pt-4 pb-7 bg-gray-100">
         <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-600">
-          Available products:
+          Share together, Grow together!
         </h2>
         <ProductsList limit={8} filter="available" searchQuery="" />
         <a
