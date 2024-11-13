@@ -9,7 +9,8 @@ export async function middleware(req: NextRequest) {
     url.pathname.startsWith("/dashboard") ||
     url.pathname.startsWith("/settings") ||
     url.pathname.startsWith("/products/new") ||
-    url.pathname.startsWith("/products/edit")
+    url.pathname.startsWith("/products/edit") ||
+    url.pathname.startsWith("/chat")
   ) {
     if (!token) {
       url.pathname = "/login";

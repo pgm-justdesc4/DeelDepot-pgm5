@@ -80,7 +80,12 @@ const ProductDetail: React.FC = () => {
   }, [documentId]);
 
   const openChat = async () => {
-    if (!session?.user?.strapiToken || !product) return;
+    if (!session) {
+      window.location.href = "/login";
+      return;
+    }
+
+    if (!session.user?.strapiToken || !product) return;
 
     const headers = {
       Authorization: `Bearer ${session.user.strapiToken}`,

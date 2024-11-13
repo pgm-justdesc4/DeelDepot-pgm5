@@ -4,9 +4,9 @@ import EditProductForm from "./components/editProductForm";
 
 const editProductPage: React.FC = () => {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
       <SideNavigation />
-      <div className="flex-1 p-6">
+      <div className="p-6">
         <h2 className="text-2xl text-center mb-4 font-semibold">
           Edit product
         </h2>
