@@ -44,12 +44,7 @@ export const authOptions: NextAuthOptions = {
 
           // Fetch the user role
           const roleResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}?populate=role`,
-            {
-              headers: {
-                Authorization: `Bearer ${jwt}`,
-              },
-            }
+            `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}?populate=role`
           );
 
           if (!roleResponse.ok) {
@@ -95,10 +90,59 @@ export const authOptions: NextAuthOptions = {
         account &&
         (account.provider === "github" || account.provider === "google")
       ) {
-        token.id = user.id;
+        // Check if user exists in Strapi
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users?filters[email][$eq]=${user.email}`
+        );
+
+        let strapiUser;
+        if (response.ok) {
+          const users = await response.json();
+          if (users.length > 0) {
+            strapiUser = users[0];
+          } else {
+            // Create user in Strapi
+            const createUserResponse = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/auth/local/register`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  username: user.name,
+                  email: user.email,
+                  password: Math.random().toString(36).slice(-8), // Generate a random password
+                }),
+              }
+            );
+
+            if (!createUserResponse.ok) {
+              const errorBody = await createUserResponse.text();
+              console.error(
+                "Failed to create user in Strapi",
+                createUserResponse.status,
+                errorBody
+              );
+              throw new Error("Failed to create user in Strapi");
+            }
+
+            strapiUser = await createUserResponse.json();
+          }
+        } else {
+          const errorBody = await response.text();
+          console.error(
+            "Failed to fetch user from Strapi",
+            response.status,
+            errorBody
+          );
+          throw new Error("Failed to fetch user from Strapi");
+        }
+
+        token.id = strapiUser.id;
         token.role = "thirdParty";
-        token.documentId = user.documentId;
-        token.strapiToken = user.strapiToken;
+        token.documentId = strapiUser.documentId;
+        token.strapiToken = account.accessToken;
       } else if (user) {
         token.id = user.id;
         token.role = user.role;

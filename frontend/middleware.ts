@@ -25,5 +25,12 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  if (url.pathname.startsWith("/settings")) {
+    if (token?.role !== "thirdparty") {
+      url.pathname = "/register";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return NextResponse.next();
 }
