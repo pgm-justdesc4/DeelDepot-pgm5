@@ -32,16 +32,13 @@ const LoginForm: React.FC = () => {
   const handleLoginWithGoogle = () => authenticateThirdParty("google");
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
+    <div className="flex flex-col mt-12 items-center min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-sm sm:max-w-md p-6 sm:p-8 space-y-6 bg-white rounded shadow-md">
         <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-900">
           Login
         </h2>
         {error && <p className="text-red-500 text-center">{error}</p>}
-        <form
-          className="mt-6 sm:mt-8 space-y-4 sm:space-y-6"
-          onSubmit={handleSubmit}
-        >
+        <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm">
             <div>
               <label htmlFor="email-address" className="sr-only">

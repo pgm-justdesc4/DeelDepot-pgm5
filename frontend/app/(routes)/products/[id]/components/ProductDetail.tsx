@@ -7,6 +7,7 @@ import { Product } from "@/types/Product";
 import Slider from "react-slick";
 import { useSession } from "next-auth/react";
 import { Chatroom } from "@/types/chatroom";
+import Loader from "@/components/common/Loader";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -35,6 +36,7 @@ const ProductDetail: React.FC = () => {
   const params = useParams();
   const { id: documentId } = params;
   const [product, setProduct] = React.useState<Product | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const { data: session } = useSession();
 
   React.useEffect(() => {
@@ -69,6 +71,8 @@ const ProductDetail: React.FC = () => {
         setProduct((data as { product: Product }).product);
       } catch (error) {
         console.error("Error fetching product:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -123,6 +127,11 @@ const ProductDetail: React.FC = () => {
       console.error("Error handling chatroom:", error);
     }
   };
+
+  // Display loader while fetching product
+  if (loading) {
+    return <Loader className="my-10" />;
+  }
 
   if (!product) {
     return <div className="text-center text-gray-500">Loading...</div>;
