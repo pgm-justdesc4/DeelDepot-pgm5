@@ -1,11 +1,7 @@
 import React from "react";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../lib/authOptions";
 import ProductsList from "@/components/ProductsList";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
-
+const Home: React.FC = () => {
   return (
     <div>
       <div className="bg-white shadow-lg p-4 sm:p-8 sm:pt-14 sm:pb-14">
@@ -32,4 +28,6 @@ export default async function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Home;

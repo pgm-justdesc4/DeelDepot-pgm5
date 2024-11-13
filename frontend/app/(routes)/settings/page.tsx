@@ -1,7 +1,8 @@
+import React from "react";
 import SideNavigation from "@/components/SideNavigation";
 import SettingsForm from "./components/SettingsForm";
 
-export default function SettingsPage() {
+const SettingsPage: React.FC = () => {
   return (
     <div>
       <div className="mb-8">
@@ -10,4 +11,6 @@ export default function SettingsPage() {
       <SettingsForm />
     </div>
   );
-}
+};
+
+export default SettingsPage;

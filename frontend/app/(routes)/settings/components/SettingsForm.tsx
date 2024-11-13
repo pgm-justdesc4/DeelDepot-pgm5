@@ -29,6 +29,7 @@ const SettingsForm: React.FC = () => {
     }
   }, [session]);
 
+  // Submit the form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (session?.user?.id) {

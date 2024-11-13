@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 
-export default function SideNavigation() {
+const SideNavigation: React.FC = () => {
   const pathname = usePathname();
 
   return (
@@ -41,4 +42,6 @@ export default function SideNavigation() {
       </ul>
     </nav>
   );
-}
+};
+
+export default SideNavigation;

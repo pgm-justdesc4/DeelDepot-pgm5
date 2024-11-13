@@ -41,6 +41,7 @@ const EditProductForm: React.FC = () => {
   });
 
   useEffect(() => {
+    // Fetch product data
     const fetchProduct = async () => {
       try {
         const data = await request(
@@ -63,6 +64,7 @@ const EditProductForm: React.FC = () => {
     fetchProduct();
   }, [id]);
 
+  // Handle form input changes
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -75,6 +77,7 @@ const EditProductForm: React.FC = () => {
     });
   };
 
+  // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!session) {

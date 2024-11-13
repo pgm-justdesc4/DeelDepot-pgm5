@@ -1,11 +1,10 @@
 "use client";
-
 import React, { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { authenticateThirdParty } from "@/lib/loginActions";
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 

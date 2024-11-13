@@ -1,8 +1,9 @@
+import React from "react";
 import SideNavigation from "../../../components/SideNavigation";
 import UserProductsList from "./components/UserProductsList";
 import Link from "next/link";
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <SideNavigation />

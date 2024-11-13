@@ -1,12 +1,13 @@
-// ManageUsers.tsx
 "use client";
 import React, { useEffect, useState } from "react";
 import { gql, GraphQLClient } from "graphql-request";
 import { useSession } from "next-auth/react";
 import { User } from "@/types/User";
+import Loader from "@/components/common/Loader";
 
 const ManageUsers: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const ManageUsers: React.FC = () => {
       return;
     }
 
+    // Fetch users from the REST API (no graphql as it's easier to get all user data)
     const fetchUsers = async () => {
       const endpoint = process.env.NEXT_PUBLIC_API_URL as string;
       const restEndpoint = `${endpoint}/api/users`;
@@ -35,9 +37,12 @@ const ManageUsers: React.FC = () => {
         setUsers(usersWithRoles);
       } catch (error) {
         console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
+    // Fetch user roles
     const fetchUserRoles = async (users: User[]) => {
       const endpoint = process.env.NEXT_PUBLIC_API_URL as string;
       const graphQLClient = new GraphQLClient(`${endpoint}/graphql`, {
@@ -83,6 +88,7 @@ const ManageUsers: React.FC = () => {
     fetchUsers();
   }, [session]);
 
+  // Block or unblock a user
   const toggleBlockUser = async (userId: number, blocked: boolean) => {
     const endpoint = process.env.NEXT_PUBLIC_API_URL as string;
     const graphQLClient = new GraphQLClient(`${endpoint}/graphql`, {
@@ -123,12 +129,13 @@ const ManageUsers: React.FC = () => {
     }
   };
 
+  // Update a user's role
   const updateUserRole = async (userId: number, roleName: string) => {
     const endpoint = process.env.NEXT_PUBLIC_API_URL as string;
     const token = session?.user.strapiToken;
 
     try {
-      // Fetch the role ID using the REST API
+      // Fetch the role ID using the REST API (i need the role ID not documentId, it's easier to get it from REST)
       const roleResponse = await fetch(
         `${endpoint}/api/users-permissions/roles`,
         {
@@ -191,6 +198,11 @@ const ManageUsers: React.FC = () => {
       console.error("Error updating user role:", error);
     }
   };
+
+  // Display loader while fetching users
+  if (loading) {
+    return <Loader className="my-10" />;
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,14 +1,16 @@
 "use client";
-
 import { signIn } from "next-auth/react";
+import React from "react";
 
-export default function LoginButton() {
+const LoginButton: React.FC = () => {
   return (
     <button
       onClick={() => signIn()}
-      className=" px-4 py-2 bg-blue-500 text-white rounded"
+      className="px-4 py-2 bg-blue-500 text-white rounded"
     >
       Login
     </button>
   );
-}
+};
+
+export default LoginButton;

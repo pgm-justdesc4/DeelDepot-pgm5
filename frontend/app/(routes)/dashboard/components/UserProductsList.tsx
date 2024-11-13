@@ -5,12 +5,15 @@ import { gql, GraphQLClient } from "graphql-request";
 import { Product } from "@/types/Product";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Loader from "@/components/common/Loader";
 
 const UserProductsList: React.FC = () => {
   const [products, setProducts] = React.useState<Product[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const { data: session } = useSession();
 
   React.useEffect(() => {
+    // Fetch products
     const fetchProducts = async () => {
       if (!session?.user) return;
 
@@ -41,12 +44,15 @@ const UserProductsList: React.FC = () => {
         setProducts((data as { products: Product[] }).products);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProducts();
   }, [session]);
 
+  // Delete product
   const deleteProduct = async (productId: string) => {
     const endpoint = process.env.NEXT_PUBLIC_API_URL as string;
     const graphQLClient = new GraphQLClient(`${endpoint}/graphql`, {
@@ -72,6 +78,11 @@ const UserProductsList: React.FC = () => {
       console.error("Error deleting product:", error);
     }
   };
+
+  // Display loader while fetching products
+  if (loading) {
+    return <Loader className="my-10" />;
+  }
 
   if (products.length === 0) {
     return (

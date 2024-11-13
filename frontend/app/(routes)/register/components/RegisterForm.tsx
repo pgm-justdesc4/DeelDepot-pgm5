@@ -1,17 +1,17 @@
 "use client";
-
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { authenticateThirdParty } from "@/lib/loginActions";
 
-const RegisterForm = () => {
+const RegisterForm: React.FC = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // Submit the form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -60,10 +60,12 @@ const RegisterForm = () => {
     }
   };
 
+  // Login with GitHub
   const handleLoginWithGitHub = () => {
     authenticateThirdParty("github");
   };
 
+  // Login with Google
   const handleLoginWithGoogle = () => {
     authenticateThirdParty("google");
   };

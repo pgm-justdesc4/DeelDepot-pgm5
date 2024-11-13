@@ -33,6 +33,7 @@ const NewProductForm: React.FC = () => {
   });
   const [images, setImages] = useState<FileList | null>(null);
 
+  // Handle form input changes
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -45,12 +46,14 @@ const NewProductForm: React.FC = () => {
     });
   };
 
+  // Handle image input changes
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setImages(e.target.files);
     }
   };
 
+  // Upload images to Strapi
   const uploadImages = async () => {
     if (!images) return [];
 
@@ -79,6 +82,7 @@ const NewProductForm: React.FC = () => {
     }
   };
 
+  // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!session) {

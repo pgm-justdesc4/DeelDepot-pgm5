@@ -1,7 +1,8 @@
+import React from "react";
 import SideNavigation from "@/components/SideNavigation";
 import EditProductForm from "./components/editProductForm";
 
-const editProductPage = () => {
+const editProductPage: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <SideNavigation />

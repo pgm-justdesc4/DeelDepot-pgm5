@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { gql, GraphQLClient } from "graphql-request";
 import { Product } from "../types/Product";
+import Loader from "./common/Loader";
 
 interface ProductsListProps {
   limit?: number;
@@ -16,8 +17,10 @@ const ProductsList: React.FC<ProductsListProps> = ({
   searchQuery,
 }) => {
   const [products, setProducts] = React.useState<Product[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
+    // Fetch products
     const fetchProducts = async () => {
       const endpoint = process.env.NEXT_PUBLIC_API_URL as string;
       const graphQLClient = new GraphQLClient(`${endpoint}/graphql`);
@@ -45,22 +48,32 @@ const ProductsList: React.FC<ProductsListProps> = ({
         setProducts((data as { products: Product[] }).products);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProducts();
   }, []);
 
+  // Filter products
   const filteredProducts = products.filter(
     (product) =>
       (filter === "all" || product.available) &&
       product.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Display loader while fetching products
+  if (loading) {
+    return <Loader className="my-10" />;
+  }
+
+  // Display message if no products found
   if (filteredProducts.length === 0) {
     return <div className="text-center text-gray-500">No products found</div>;
   }
 
+  // Settings for if limit is set
   const displayedProducts = limit
     ? filteredProducts.slice(0, limit)
     : filteredProducts;

@@ -1,7 +1,9 @@
+import React from "react";
 import Chat from "./components/chat";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth/next";
 import { fetchMessages, fetchChatroomDetails } from "./actions";
+import { User } from "@/types/User";
 
 interface PageProps {
   params: {
@@ -43,7 +45,7 @@ const Page = async ({ params }: PageProps) => {
         <div className="text-lg mb-6">
           <p className="font-semibold text-gray-600">Users:</p>
           <div className="flex flex-wrap">
-            {users.map((user: any) => (
+            {users.map((user: User) => (
               <span
                 key={user.username}
                 className="mr-2 mb-2 bg-gray-200 px-2 py-1 rounded"

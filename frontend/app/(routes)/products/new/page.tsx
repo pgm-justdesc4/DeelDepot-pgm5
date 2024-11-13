@@ -1,11 +1,12 @@
+import React from "react";
 import SideNavigation from "@/components/SideNavigation";
 import NewProductForm from "./components/newProductForm";
 
-const addProductPage = () => {
+const addProductPage: React.FC = () => {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
       <SideNavigation />
-      <div className="flex-1 p-6">
+      <div className="p-6">
         <h2 className="text-2xl text-center mb-4 font-semibold">
           Add new product
         </h2>

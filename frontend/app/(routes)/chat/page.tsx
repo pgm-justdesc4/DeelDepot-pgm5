@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { gql, request } from "graphql-request";
 import { useSession } from "next-auth/react";
 import DeleteButton from "./components/DeleteButton";
 import { Chatroom } from "@/types/chatroom";
+import Loader from "@/components/common/Loader";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const STRAPI_GRAPHQL_URL = `${baseUrl}/graphql`;
@@ -22,19 +23,6 @@ const GET_CHATROOMS = gql`
   }
 `;
 
-const ADD_CHATROOM = gql`
-  mutation CreateChatroom($data: ChatroomInput!) {
-    createChatroom(data: $data) {
-      documentId
-      title
-      users_permissions_users {
-        username
-        documentId
-      }
-    }
-  }
-`;
-
 const DELETE_CHATROOM = gql`
   mutation Mutation($documentId: ID!) {
     deleteChatroom(documentId: $documentId) {
@@ -43,8 +31,9 @@ const DELETE_CHATROOM = gql`
   }
 `;
 
-const ChatPage = () => {
+const ChatPage: React.FC = () => {
   const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const { data: session } = useSession();
 
   // Fetch chatrooms on component mount
@@ -53,6 +42,7 @@ const ChatPage = () => {
       if (session?.user.strapiToken) {
         const fetchedChatrooms = await fetchChatrooms(session.user.strapiToken);
         setChatrooms(fetchedChatrooms);
+        setLoading(false);
       }
     }
 
@@ -98,6 +88,11 @@ const ChatPage = () => {
       console.error("Error deleting chatroom:", error);
     }
   };
+
+  // Display loader while fetching chatrooms
+  if (loading) {
+    return <Loader className="my-10" />;
+  }
 
   return (
     <div className="container max-w-6xl mx-auto p-4">

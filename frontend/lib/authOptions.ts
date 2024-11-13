@@ -16,6 +16,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials) return null;
 
         try {
+          // Authenticate the user
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/auth/local`,
             {
