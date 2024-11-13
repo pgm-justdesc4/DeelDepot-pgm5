@@ -125,21 +125,12 @@ const DeveloperInfoPage: React.FC = () => {
             includes an example Admin Panel. This section is not accessible to
             regular users, but can be explored with designated credentials
             (e.g., <code>admin@example.com</code> / <code>admin123</code>). In
-            this panel, admins have special permissions, such as:
+            this panel, admins have special permissions, such as: Managing all
+            users, with options to block users or change their roles.
           </p>
-          <ul className="list-disc list-inside text-gray-700 leading-relaxed mt-2">
-            <li>
-              Managing all users, with options to block users or change their
-              roles
-            </li>
-            <li>
-              Access to an administrative dashboard for overseeing overall
-              platform activity and user behavior
-            </li>
-          </ul>
           <p className="text-gray-700 leading-relaxed mt-4">
-            Note: Admin access is restricted and meant for demonstration
-            purposes only, highlighting the app&apos;s extended functionalities.
+            Admin access is restricted and meant for demonstration purposes
+            only, highlighting the app&apos;s extended functionalities.
           </p>
         </div>
       </section>

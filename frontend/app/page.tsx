@@ -14,14 +14,14 @@ const Home: React.FC = () => {
         </p>
       </div>
       <hr className="my-4 sm:my-8 border-gray-300" />
-      <div className="flex flex-col items-center pt-4 pb-7 bg-gray-100">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-600">
+      <div className=" max-w-6xl mx-auto pt-4 pb-7 bg-gray-100">
+        <h2 className="text-2xl text-center sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-600">
           Share together, Grow together!
         </h2>
         <ProductsList limit={8} filter="available" searchQuery="" />
         <a
           href="/products"
-          className="view-all-products bg-blue-500 text-white shadow-lg rounded-lg p-3 sm:p-4 mt-4 sm:mt-6 flex items-center justify-center hover:bg-blue-700 transition duration-300"
+          className="view-all-products max-w-36 mx-auto bg-blue-500 text-white shadow-lg rounded-lg p-3 sm:p-4 mt-4 sm:mt-6 flex items-center justify-center hover:bg-blue-700 transition duration-300"
         >
           View all &rarr;
         </a>
