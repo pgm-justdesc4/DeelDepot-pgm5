@@ -34,10 +34,9 @@ Welcome to **DeelDepot** – a community-driven platform where users can share, 
 - **Database**: PostgreSQL
 - **Authentication**: JWT for sessions and Strapi.
 
-## 📋 Documentation & Links
+## App Link
 
-- **GitHub Repository**: [GitHub Link](https://github.com/username/DeelDepot)
-- **API Documentation**: Available within the application’s developer documentation page.
+- **App link**: [DeelDepot - App]([https://github.com/username/DeelDepot](https://eindoprdacht-programming-5-pgm-justdesc4.vercel.app/))
   
 ## Author
 
