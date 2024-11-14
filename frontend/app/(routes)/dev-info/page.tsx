@@ -19,12 +19,30 @@ const DeveloperInfoPage: React.FC = () => {
           Project Overview
         </h2>
         <p className="text-gray-700 leading-relaxed">
-          DeelDepot is a Next.js 14 application that provides a platform for
-          users to share and manage a community inventory of products. The goal
-          of the application is to make it easy for users to borrow, lend, or
-          explore items available in their area. Built using PostgreSQL for
-          reliable data management, DeelDepot ensures a responsive,
+          DeelDepot is an application that provides a platform for users to
+          share and manage a community inventory of products. The goal of the
+          application is to make it easy for users to borrow, lend, or explore
+          items available on the platform. DeelDepot ensures a responsive,
           user-friendly experience.
+        </p>
+      </section>
+
+      {/* Info for Teacher */}
+      <section className="mb-12 bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold text-gray-800 ml-1 mb-4">
+          Info for Teacher
+        </h2>
+        <p className="text-gray-700 leading-relaxed">
+          You can login as an admin using the following credentials:
+          <br />
+          Email: <strong>admin@example.com</strong>
+          <br />
+          Password: <strong>admin123</strong>
+          <br />
+          <br />
+          In code, you&apos;ll see all cases with users are done with REST. This
+          is because it was easier to get the user data and do stuff with it,
+          the rest of the app is done with GraphQL requests/mutations.
         </p>
       </section>
 
@@ -67,9 +85,9 @@ const DeveloperInfoPage: React.FC = () => {
             Product Detail
           </h3>
           <p className="text-gray-700 leading-relaxed">
-            Each product in DeelDepot has its own detail page where users can
-            view specific information, such as the product’s description,
-            availability, and owner details. Key features include:
+            Each product has its own detail page where users can view specific
+            information, such as the product’s description, availability, and
+            owner details. Key features include:
           </p>
           <ul className="list-disc list-inside text-gray-700 leading-relaxed mt-2">
             <li>
