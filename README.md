@@ -36,7 +36,7 @@ Welcome to **DeelDepot** – a community-driven platform where users can share, 
 
 ## App Link
 
-- **App link**: [DeelDepot - App]([https://github.com/username/DeelDepot](https://eindoprdacht-programming-5-pgm-justdesc4.vercel.app/))
+- **App link**: [DeelDepot - App](https://eindoprdacht-programming-5-pgm-justdesc4.vercel.app/)
   
 ## Author
 
@@ -44,3 +44,6 @@ Welcome to **DeelDepot** – a community-driven platform where users can share, 
  
 
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/KVB3ujZF)
+
+
+
