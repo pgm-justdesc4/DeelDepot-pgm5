@@ -32,7 +32,7 @@ Welcome to **DeelDepot** – a community-driven platform where users can share, 
 - **Frontend**: Next.js 14, Tailwind CSS
 - **Backend**: Strapi CMS with GraphQL
 - **Database**: PostgreSQL
-- **Authentication**: JWT for sessions, bcrypt for password security
+- **Authentication**: JWT for sessions and Strapi.
 
 ## 📋 Documentation & Links
 
