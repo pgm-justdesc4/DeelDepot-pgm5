@@ -102,6 +102,7 @@ export const authOptions: NextAuthOptions = {
             strapiUser = users[0];
           } else {
             // Create user in Strapi
+            const password = Math.random().toString(36).slice(-8);
             const createUserResponse = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL}/api/auth/local/register`,
               {
@@ -112,7 +113,7 @@ export const authOptions: NextAuthOptions = {
                 body: JSON.stringify({
                   username: user.name,
                   email: user.email,
-                  password: Math.random().toString(36).slice(-8), // Generate a random password
+                  password: password,
                 }),
               }
             );
@@ -128,6 +129,34 @@ export const authOptions: NextAuthOptions = {
             }
 
             strapiUser = await createUserResponse.json();
+
+            // Fetch the JWT token for the newly created user
+            const tokenResponse = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/api/auth/local`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  identifier: user.email,
+                  password: password,
+                }),
+              }
+            );
+
+            if (!tokenResponse.ok) {
+              const errorBody = await tokenResponse.text();
+              console.error(
+                "Failed to fetch JWT token from Strapi",
+                tokenResponse.status,
+                errorBody
+              );
+              throw new Error("Failed to fetch JWT token from Strapi");
+            }
+
+            const tokenData = await tokenResponse.json();
+            strapiUser.jwt = tokenData.jwt;
           }
         } else {
           const errorBody = await response.text();
@@ -142,7 +171,7 @@ export const authOptions: NextAuthOptions = {
         token.id = strapiUser.id;
         token.role = "thirdParty";
         token.documentId = strapiUser.documentId;
-        token.strapiToken = account.accessToken;
+        token.strapiToken = strapiUser.jwt;
       } else if (user) {
         token.id = user.id;
         token.role = user.role;

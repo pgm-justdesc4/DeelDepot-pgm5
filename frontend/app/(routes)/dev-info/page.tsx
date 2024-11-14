@@ -124,9 +124,9 @@ const DeveloperInfoPage: React.FC = () => {
             As part of a demonstration for educational purposes, DeelDepot
             includes an example Admin Panel. This section is not accessible to
             regular users, but can be explored with designated credentials
-            (e.g., <code>admin@example.com</code> / <code>admin123</code>). In
-            this panel, admins have special permissions, such as: Managing all
-            users, with options to block users or change their roles.
+            (admin@example.com / pw: admin123). In this panel, admins have
+            special permissions, such as: Managing all users, with options to
+            block users or change their roles.
           </p>
           <p className="text-gray-700 leading-relaxed mt-4">
             Admin access is restricted and meant for demonstration purposes
