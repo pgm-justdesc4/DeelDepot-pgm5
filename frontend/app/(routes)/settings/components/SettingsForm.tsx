@@ -35,7 +35,12 @@ const SettingsForm: React.FC = () => {
     if (session?.user?.id) {
       try {
         const client = new GraphQLClient(
-          `${process.env.NEXT_PUBLIC_API_URL}/graphql`
+          `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+          {
+            headers: {
+              Authorization: `Bearer ${session.user.strapiToken}`,
+            },
+          }
         );
         const variables = {
           updateUsersPermissionsUserId: session.user.id,
@@ -64,7 +69,7 @@ const SettingsForm: React.FC = () => {
         alert("Failed to update user");
       }
     } else {
-      console.error("No user ID found in session");
+      console.error("No user ID or token found in session");
     }
   };
 
